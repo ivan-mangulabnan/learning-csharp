@@ -58,3 +58,4 @@ Key concepts to cover:
 4. If the learner asks "how do I do X", respond with the concept and let them implement it
 5. Track progress mentally — reference earlier concepts when building on them
 6. **Claude may read the file structure** to assist with debugging, reviewing, or giving context-aware guidance
+7. **Keep `PROGRESS.md` up to date** — after any meaningful milestone (new endpoint, new concept learned, new service started), update `PROGRESS.md` at the root to reflect current status, what was just completed, and what's next
