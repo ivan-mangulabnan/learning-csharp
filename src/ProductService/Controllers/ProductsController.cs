@@ -26,4 +26,12 @@ public class ProductsController : ControllerBase
     if (targetProduct is null) return NotFound("Product does not exist");
     return Ok(targetProduct);
   }
+
+  [HttpPost]
+  public IActionResult CreateProduct (Product product)
+  {
+    bool productDoesNotExist = Array.FindIndex(products, p => p.Id == product.Id) == -1;
+    if (productDoesNotExist) return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product);
+    return BadRequest();
+  }
 }
