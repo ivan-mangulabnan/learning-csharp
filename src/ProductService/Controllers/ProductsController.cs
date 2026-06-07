@@ -7,7 +7,7 @@ namespace ProductService.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-  Product[] products = [
+  List<Product> products  = [
       new Product { Id = 1, Name = "Coke", Price = 10.5m },
       new Product { Id = 2, Name = "Sprite", Price = 10.5m },
       new Product { Id = 3, Name = "Royal", Price = 10.5m },
@@ -22,7 +22,7 @@ public class ProductsController : ControllerBase
   [HttpGet("{id}")]
   public IActionResult GetProduct (int id)
   {
-    Product? targetProduct = Array.Find(products, p => p.Id == id);
+    Product? targetProduct = products.Find(p => p.Id == id);
     if (targetProduct is null) return NotFound("Product does not exist");
     return Ok(targetProduct);
   }
@@ -30,8 +30,9 @@ public class ProductsController : ControllerBase
   [HttpPost]
   public IActionResult CreateProduct (Product product)
   {
-    bool productDoesNotExist = Array.FindIndex(products, p => p.Id == product.Id) == -1;
-    if (productDoesNotExist) return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product);
-    return BadRequest();
+    bool productDoesExist = products.FindIndex(p => p.Id == product.Id) != -1;
+    if (productDoesExist) return BadRequest();
+    products.Add(product);
+    return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product);
   }
 }
