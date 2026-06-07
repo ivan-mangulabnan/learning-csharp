@@ -35,4 +35,19 @@ public class ProductsController : ControllerBase
     products.Add(product);
     return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product);
   }
+
+  [HttpPut("{id}")]
+  public IActionResult UpdateProduct (int id, [FromBody] Product product)
+  {
+    int targetIndex = products.FindIndex(p => p.Id == id);
+    bool productExists = targetIndex != -1;
+
+    if (productExists)
+    {
+      products[targetIndex] = product;
+      return NoContent();
+    }
+
+    return NotFound("Product does not exist");
+  }
 }
