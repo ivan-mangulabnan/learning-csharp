@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Models;
+using ProductService.Services;
 
 namespace ProductService.Controllers;
 
@@ -7,22 +8,24 @@ namespace ProductService.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-  List<Product> products  = [
-      new Product { Id = 1, Name = "Coke", Price = 10.5m },
-      new Product { Id = 2, Name = "Sprite", Price = 10.5m },
-      new Product { Id = 3, Name = "Royal", Price = 10.5m },
-  ];
+  private readonly IProductService _productService;
+
+  public ProductsController(IProductService productService)
+  {
+    _productService = productService;  
+  }
 
   [HttpGet]
   public IActionResult GetProducts ()
   {
+    var products = _productService.GetAll();
     return Ok(products);
   }
 
   [HttpGet("{id}")]
   public IActionResult GetProduct (int id)
   {
-    Product? targetProduct = products.Find(p => p.Id == id);
+    Product? targetProduct = _productService.GetById(id);
     if (targetProduct is null) return NotFound("Product does not exist");
     return Ok(targetProduct);
   }
@@ -30,39 +33,27 @@ public class ProductsController : ControllerBase
   [HttpPost]
   public IActionResult CreateProduct (Product product)
   {
-    bool productDoesExist = products.FindIndex(p => p.Id == product.Id) != -1;
+    bool productDoesExist = _productService.GetById(product.Id) != null;
     if (productDoesExist) return BadRequest();
-    products.Add(product);
+    _productService.Create(product);
     return CreatedAtAction(nameof(GetProduct), new { id = product.Id}, product);
   }
 
   [HttpPut("{id}")]
   public IActionResult UpdateProduct (int id, [FromBody] Product product)
   {
-    int targetIndex = products.FindIndex(p => p.Id == id);
-    bool productExists = targetIndex != -1;
+    bool updateSuccess = _productService.Update(id, product);
 
-    if (productExists)
-    {
-      products[targetIndex] = product;
-      return NoContent();
-    }
-
+    if (updateSuccess) return NoContent();
     return NotFound("Product does not exist");
   }
 
   [HttpDelete("{id}")]
   public IActionResult DeleteProduct (int id)
   {
-    int targetIndex = products.FindIndex(p => p.Id == id);
-    bool productExists = targetIndex != -1;
+    bool deleteSuccess = _productService.Delete(id);
 
-    if (productExists)
-    {
-      products.RemoveAt(targetIndex);
-      return NoContent();
-    }
-
+    if (deleteSuccess) return NoContent();
     return NotFound("Product does not exist");
   }
 }
