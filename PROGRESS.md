@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**Stage:** ProductService — basic GET endpoint working
+**Stage:** ProductService — full CRUD with DI complete, one pending fix
 
 ---
 
@@ -11,25 +11,32 @@
 ### ProductService
 - `Program.cs` — minimal setup: `AddControllers()`, `AddOpenApi()`, `MapControllers()`
 - `Models/Product.cs` — model with `Id (int)`, `Name (string)`, `Price (decimal)`
-- `Controllers/ProductsController.cs` — `GET /api/products`, returns hardcoded list
+- `Controllers/ProductsController.cs` — full CRUD, thin controller delegating to service
+- `Services/IProductService.cs` — interface defining the service contract
+- `Services/ProductService.cs` — concrete implementation with in-memory `List<Product>`
+
+### Pending
+- Register `IProductService` / `ProductService` in `Program.cs` (DI container wiring — not done yet)
 
 ---
 
 ## Concepts Covered
 
 - ASP.NET Core project structure vs Express
-- `[ApiController]`, `[Route]`, `[HttpGet]` attributes
-- `ControllerBase` and returning `IActionResult` / `Ok()`
-- C# model properties `{ get; set; }` and default values
+- `[ApiController]`, `[Route]`, `[HttpGet/Post/Put/Delete]` attributes
+- `ControllerBase` and `IActionResult` — `Ok()`, `NotFound()`, `NoContent()`, `CreatedAtAction()`
+- C# auto-properties `{ get; set; }`, nullable types (`?`), `readonly` fields
 - `decimal` for money, namespaces, `using` statements
+- `List<T>` vs arrays — dynamic sizing, `.Add()`, `.RemoveAt()`, `.FindIndex()`
+- Dependency Injection — interface + implementation pattern, constructor injection, `private readonly`
+- Service/controller separation — controller handles HTTP, service handles data logic
 
 ---
 
 ## What's Next
 
-1. Full CRUD on ProductService (`POST`, `PUT`, `DELETE`)
-2. In-memory repository + Dependency Injection (DI)
-3. Build OrderService
-4. Service-to-service HTTP (`HttpClientFactory`)
-5. Docker + docker-compose
-6. API Gateway
+1. Register the service in `Program.cs` to wire up DI
+2. Build `OrderService`
+3. Service-to-service HTTP (`HttpClientFactory`)
+4. Docker + docker-compose
+5. API Gateway
