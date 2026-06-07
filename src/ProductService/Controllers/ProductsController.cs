@@ -50,4 +50,19 @@ public class ProductsController : ControllerBase
 
     return NotFound("Product does not exist");
   }
+
+  [HttpDelete("{id}")]
+  public IActionResult DeleteProduct (int id)
+  {
+    int targetIndex = products.FindIndex(p => p.Id == id);
+    bool productExists = targetIndex != -1;
+
+    if (productExists)
+    {
+      products.RemoveAt(targetIndex);
+      return NoContent();
+    }
+
+    return NotFound("Product does not exist");
+  }
 }
