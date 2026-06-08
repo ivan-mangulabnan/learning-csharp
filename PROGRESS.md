@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**Stage:** ProductService — full CRUD with DI complete, one pending fix
+**Stage:** ProductService complete — moving to OrderService
 
 ---
 
@@ -15,8 +15,8 @@
 - `Services/IProductService.cs` — interface defining the service contract
 - `Services/ProductService.cs` — concrete implementation with in-memory `List<Product>`
 
-### Pending
-- Register `IProductService` / `ProductService` in `Program.cs` (DI container wiring — not done yet)
+### Completed
+- Registered `IProductService` / `ProductService` in `Program.cs` with `AddScoped` — DI fully wired
 
 ---
 
