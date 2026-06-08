@@ -2,7 +2,7 @@
 
 ## Current Status
 
-**Stage:** ProductService complete — moving to OrderService
+**Stage:** OrderService in progress — controller started, endpoints pending
 
 ---
 
@@ -17,6 +17,12 @@
 
 ### Completed
 - Registered `IProductService` / `ProductService` in `Program.cs` with `AddScoped` — DI fully wired
+
+### OrderService (in progress)
+- `Models/Order.cs` — `Id`, `ProductId`, `OrderDate`, `Quantity`
+- `Services/IOrderService.cs` — full CRUD interface defined
+- `Services/OrderService.cs` — implemented with in-memory list
+- `Controllers/OrderController.cs` — scaffolded, constructor injection done, endpoints pending
 
 ---
 
